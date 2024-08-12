@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--jQuery 스크립트 -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+    <style>
+        .modal_overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            z-index: 1000;
+        }
+
+        .modal_window {
+            background: white;
+            backdrop-filter: blur(13.5px);
+            -webkit-backdrop-filter: blur(13.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 800px;
+            height: 600px;
+            position: relative;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div>
+    <div>
+
+        <a href="#" id="click">술 등록</a>
+
+
+    </div>
+    <div>
+
+    </div>
+    <!-- 첫번 째 모달 -->
+    <div id="first_modal" class="modal_overlay">
+        <div class="modal_window">
+            <div style="border-bottom:solid 1px gray;display: flex; flex-direction: row; justify-content: space-between;">
+                <div style="width: 40px; background: gray">
+
+                </div>
+                <div>
+                    새 이미지 업로드
+                </div>
+                <div style="width: 40px; background: gray">
+                    <span class="modal_close material-icons-outlined">close</span>
+                </div>
+            </div>
+
+            <div class="img_upload_space" style=" width: 778px; height:540px;margin-top: 10px; ">
+
+            </div>
+        </div>
+    </div>
+    <!-- 두번 째 모달 -->
+    <div id="second_modal" class="modal_overlay">
+        <div class="modal_window">
+            <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                <div style="width: 40px; background: gray">
+
+                </div>
+                <div>
+                    새 이미지 업로드
+                </div>
+                <div style="width: 40px; background: gray">
+                    <span class="modal_close material-icons-outlined">close</span>
+                </div>
+            </div>
+            <div style="border-top: solid 1px gray; display: flex ;flex-direction: row;margin-top: 10px; ">
+                <div class="img_upload_space" style="width: 500px; height:540px;">
+
+                </div>
+                <div style="border-left: solid 1px gray"> <!--이 영역에 input 데이터 만들어야함 -->
+                    <div>
+                        <textarea id="input_information" class="form-control" style="width: 276px; height: 200px"
+                                  rows="5" placeholder="정보"></textarea>
+                    </div>
+                    <div>
+                        <input id="input_name" type="text" class="form-control" style="width: 276px;" placeholder="이름"
+                               value="">
+                    </div>
+                    <div>
+                        <input id="input_inventory" type="text" class="form-control" style="width: 276px;"
+                               placeholder="재고" value="">
+                    </div>
+                    <div>
+                        <input id="input_price" type="text" class="form-control" style="width: 276px;" placeholder="가격"
+                               value="">
+                    </div>
+                    <div>
+                        <select name="alcol_type" id="select_alcol_type">
+                            <option value="0" selected> 술 종류 선택</option>
+                            <option value="Whisky">위스키</option>
+                            <option value="Soju">소주</option>
+                            <option value="Sake">사케</option>
+                            <option value="Wine">와인</option>
+                            <option value="Beer">맥주</option>
+                            <option value="Other">기타</option>
+                        </select>
+                    </div>
+                    <div>
+                        <select name="drink_type" id="select_drink_type">
+                            <option value="0" selected> 술 세부 종류 선택</option>
+                            <option value="Bourbon">버번</option>
+                            <option value="Scotch">스카치</option>
+                            <option value="Soju">소주</option>
+                            <option value="Sake">사케</option>
+                            <option value="Red Wine">레드와인</option>
+                            <option value="White Wine">화이트와인</option>
+                            <option value="Lager">라거</option>
+                            <option value="ALE">에일</option>
+                            <option value="Other">기타</option>
+                        </select>
+                    </div>
+                    <button id="feed_create_button" type="button" class="btn btn-primary" style="width: 100%;">
+                        공유하기
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let files
+    $(document).ready(function () {
+        $('#feed_create_button').click(function () {
+
+            let file = files[0];
+            let name = $('#input_name').val();
+            let inventory = $('#input_inventory').val();
+            let price = $('#input_price').val();
+            let alcol_type = $('#select_alcol_type').val();
+            let drink_type = $('#select_drink_type').val();
+            let information = $('#input_information').val();
+            let image = files[0].name;
+            console.log(name, inventory, price, alcol_type, drink_type, image, information, file)
+
+            let fd = new FormData();
+
+            fd.append('name', name);
+            fd.append('inventory', inventory);
+            fd.append('price', price);
+            fd.append('alcol_type', alcol_type);
+            fd.append('drink_type', drink_type);
+            fd.append('image', image);
+            fd.append('information', information);
+            fd.append('file', file)
+
+            if (image.length <= 0) {
+                alert("이미지가 비어있습니다.");
+            } else if (information.length <= 0) {
+                alert("설명을 입력해주세요");
+            } else if (inventory.length <= 0) {
+                alert("재고를 입력해주세요");
+            } else if (price.length <= 0) {
+                alert("가격을 입력해주세요");
+            } else {
+                createAlcol(fd);
+                console.log(files[0])
+            }
+
+            function createAlcol(fd) {
+                let create_url = "{% url 'alcoldrinks:createalcol' %}"
+                $.ajax({
+                    url: create_url,
+                    data: fd,
+                    method: "POST",
+                    processData: false,
+                    contentType: false,
+                    <!--processData: false,django.db.utils.IntegrityError: NOT NULL constraint failed: User.name 이거 지우니까 이 오류 사라짐-->
+                    success: function (data) {
+                        console.log("성공");
+                        alert('데이터 생성 성공')
+                        location.replace('/alcoldrinks/Showalcol')
+                    },
+                    error: function (request, status, error) {
+                        console.log("에러");
+                    },
+                    complete: function () {
+                        console.log("완료");
+                    }
+                });
+            }
+
+        });
+
+    });
+
+    $('#click').click(function () {
+        $('#first_modal').css({
+            display: 'flex'
+        });
+
+        $(document.body).css({ // 전체페이지 스크롤 없애는 기능 이거 안하니까 모달 띄어도 스크롤이 드르륵거림
+            overflow: 'hidden'
+        });
+    });
+
+    $(".modal_close").click(function () {
+        $('#first_modal').css({
+            display: 'none'
+        });
+        $('#second_modal').css({
+            display: 'none'
+        });
+    });
+
+    <!-- 드래그 앤 드롭 기능 -->
+    $('.img_upload_space')
+        .on("dragover", dragOver)
+        .on("dragleave", dragOver)
+        .on("drop", uploadFiles);
+
+    function dragOver(e) { <!--강의 4시간 36분에 설명 나와있는거 -->
+        e.stopPropagation();
+        e.preventDefault();
+
+        if (e.type == "dragover") {
+            $(e.target).css({
+                "background-color": "black",
+                "outline-offset": "-20px",
+            });
+        } else {
+            $(e.target).css({
+                "outline-offset": "-10px",
+            });
+        }
+    }
+
+    function uploadFiles(e) {
+        e.stopPropagation();
+        e.preventDefault();
+
+        e.dataTransfer = e.originalEvent.dataTransfer;
+        files = e.target.files || e.dataTransfer.files
+
+        if (files.length > 1) {
+            alert('하나만 올려라.');
+            return;
+        }
+
+        if (files[0].type.match(/image.*/)) {
+            $('#first_modal').css({
+                display: 'none'
+            });
+            $('#second_modal').css({
+                display: 'flex'
+            });
+
+            $('.img_upload_space').css({
+                "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+                "outline": "none",
+                "background-size": "100% 100%",
+                "background-repeat": "no-repeat",
+                "background-position": "center"
+            });
+        } else {
+            alert('이미지가 아닙니다.');
+            return;
+        }
+
+    }
+</script>
+
+</body>
+</html>

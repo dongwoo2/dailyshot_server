@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--jQuery 스크립트 -->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <meta charset="UTF-8">
+    {% load static %}
+    <title>수정폼</title>
+
+    <style>
+        .modal_overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(1.5px);
+            -webkit-backdrop-filter: blur(1.5px);
+            z-index: 1000;
+        }
+
+        .modal_window {
+            background: white;
+            backdrop-filter: blur(13.5px);
+            -webkit-backdrop-filter: blur(13.5px);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            width: 800px;
+            height: 600px;
+            position: relative;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<br>
+<!-- 첫번 째 모달 -->
+<div id="first_modal" class="modal_overlay">
+    <div class="modal_window">
+        <div style="border-bottom:solid 1px gray;display: flex; flex-direction: row; justify-content: space-between;">
+            <div style="width: 40px; background: gray">
+
+            </div>
+            <div>
+                새 이미지 업로드
+            </div>
+            <div style="width: 40px; background: gray">
+                <span class="modal_close material-icons-outlined">close</span>
+            </div>
+        </div>
+
+        <div class="img_upload_space" style=" width: 778px; height:540px;margin-top: 10px; ">
+            <div>
+                데이터를 업로드하세요! <br>
+
+                <input type="file" id="fileInput" name="update_image" accept="image/*">
+                <input type="submit" id="image_submit" value="등록하기">
+
+            </div>
+            <div id="previewContainer" style="margin-top: 10px;">
+                <!-- 업로드된 이미지의 미리보기가 여기에 표시됩니다. -->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+<form id="imageForm" method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+        <table>
+            {{ form.image.label }} <a href="#" id="image_change">이미지 변경하기</a>
+            <div style="display: flex;flex-direction: row; align-items: center; margin:0 20px">
+                <img id="previewImage" style="width: 50%; height: 300px"
+                     src="{% get_media_prefix %}{{ form.image.value }}" alt="image">
+            </div>
+
+            <input type="hidden" id="form_id" name="id" value="{{ form.instance.id }}">
+
+            {% for field in form %}
+                {% if field.name != 'image' %}
+                    <tr>
+                        <td>{{ field.label }}</td>
+                        <td>{{ field }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        <br>
+            <input class="btn btn-dark" type="submit" value="수정하기">
+</form>
+</div>
+
+<script>
+    $(document).ready(function() {
+    let file;
+    $('#image_change').click(function () {
+        $('#first_modal').css({
+            display: 'flex'
+        });
+
+        $(document.body).css({ // 전체페이지 스크롤 없애는 기능 이거 안하니까 모달 띄어도 스크롤이 드르륵거림
+            overflow: 'hidden'
+        });
+    });
+
+    $(".modal_close").click(function () {
+        $('#first_modal').css({
+            display: 'none'
+        });
+        $('#second_modal').css({
+            display: 'none'
+        });
+    });
+
+
+
+    $('#fileInput').change(function (event) {
+        // 선택된 파일 가져오기
+        file = event.target.files[0];
+        //console.log(file[0])
+
+        if (file) {
+
+            // FileReader 객체 생성
+            const reader = new FileReader();
+
+            // 파일이 로드되었을 때 실행될 함수
+            reader.onload = function (e) {
+
+                // 미리보기 이미지 생성
+                const img = $('<img>', {
+                    src: e.target.result,
+                    style: 'max-width: 100%; max-height: 100%;' // 이미지 크기 조정
+                });
+                // 미리보기 컨테이너에 이미지 추가
+                $('#previewContainer').html(img);
+
+            };
+            //$('#selectedImage').val(event.target.files[0]);
+            // 파일 읽기
+            reader.readAsDataURL(file);
+        }
+    });
+    $('#image_submit').click(function (event) { // 이미지 등록
+        // 선택된 파일 가져오기
+
+ //       e.dataTransfer = e.originalEvent.dataTransfer;
+   //     files = e.target.files || e.dataTransfer.files
+        if (file) {
+            // FileReader 객체 생성
+            const reader = new FileReader();
+
+            // 파일이 로드되었을 때 실행될 함수
+            reader.onload = function (e) {
+                // 미리보기 이미지 업데이트
+                $('#previewImage').attr('src', e.target.result);
+                // 선택한 이미지의 URL을 숨겨진 필드에 저장
+            };
+
+            // 파일 읽기
+            reader.readAsDataURL(file);
+        } else {
+            alert("이미지를 선택해 주세요."); // 파일이 선택되지 않았을 경우 경고
+        }
+        $('#first_modal').css({
+            display: 'none'
+        });
+    });
+    console.log('AJAX 요청 전');
+
+    $('#imageForm').on('submit', function(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+        console.log('AJAX 요청 후');
+        // FormData 객체 생성
+        var formData = new FormData(this);
+
+        {#const image = $('#previewImage')[0].files[0];#}
+
+        formData.append('update_image',file)
+                for (var pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]); // 각 필드와 값을 콘솔에 출력
+        }
+        {#if(image) {#}
+        {#    formData.append('update_image', image);#}
+
+        let formId = $('#form_id').val();
+        console.log(formData);
+
+
+        let create_url = "{% url 'alcoldrinks:updateAlcol' 0 %}".replace('0', formId);
+        // Django의 템플릿 언어에서는 JavaScript 코드에서 변수를 직접 사용할 수 없습니다. 즉,위와 같이 작성하면 formId가 템플릿에서 해석되지 않기 때문에 NoReverseMatch 오류가 발생합니다.
+        // AJAX 요청
+        $.ajax({
+            url: create_url, // 폼의 action 속성에서 URL 가져오기
+            type: 'POST',
+            data: formData,
+            processData: false, // jQuery가 데이터를 처리하지 않도록 설정
+            contentType: false, // jQuery가 콘텐츠 유형을 설정하지 않도록 설정
+            success: function(response) {
+                // 성공적으로 처리된 경우
+                alert('정상적으로 수정되었습니다.');
+                location.replace('/alcoldrinks/ShowAlcol')
+                // 필요한 경우 추가적인 처리 (예: 페이지 새로고침, 데이터 갱신 등)
+            },
+            error: function(xhr, status, error) {
+                // 오류 처리
+                alert('오류가 발생했습니다: ' + error);
+            }
+        });
+    });
+});
+</script>
+</body>
+</html>

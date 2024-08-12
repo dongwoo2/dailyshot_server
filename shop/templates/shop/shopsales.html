@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Jquery -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.14/themes/redmond/jquery-ui.css"
+          type="text/css"/>
+    <!-- jqGrid CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/jqgrid/4.6.0/css/ui.jqgrid.css" type="text/css"/>
+    <!-- The actual JQuery code -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.min.js"/>
+    </script>
+    <!-- The JQuery UI code -->
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.10.3/jquery-ui.min.js"/>
+    </script>
+    <!-- The jqGrid language file code-->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jqgrid/4.6.0/i18n/grid.locale-kr.js"/>
+    </script>
+    <!-- The atual jqGrid code -->
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jqgrid/4.6.0/jquery.jqGrid.src.js"/>
+    </script>
+
+    <title>월 정산</title>
+</head>
+<body>
+<!--
+class DrinkSalesRate(models.Model):
+    shop = models.ForeignKey(AllShop, on_delete=models.CASCADE) # 가게
+    drinks_id = models.ForeignKey(AlcolDrinks, on_delete=models.CASCADE) # 술 id
+    sales_rate_count = models.IntegerField(default=0) # 판매양
+    price = models.IntegerField(default=0) # 가격
+    date = models.DateField(auto_now_add=True)
+-->
+
+<script>
+    $(document).ready(function () {
+        var mydata = [
+            {
+                shop: "{{shopname.name}}",
+                drinks_id: {{ alcoldrinks.name }},
+                sales_rate_count: {{ drinkrate.sales_rate_count }},
+                price: {{ drinkrate.price }},
+                date: {{ drinkrate.date }}
+            }
+        ];
+        $("#list").jqGrid({
+            datatype: "local",
+            data: mydata,
+            colNames: ['가게이름', '술 이름', '판매량', '가격', '날짜'],
+            colModel: [
+                {name: 'shopname', index: 'shopname', width: 90, align: "center"},
+                {name: 'drinks_id', index: 'drinks_id', width: 100, align: "center"},
+                {name: 'sales_rate_count', index: 'sales_rate_count', width: 80, align: "center"},
+                {name: 'price', index: 'price', width: 80, align: "center"},
+                {name: 'date', index: 'date', width: 80, align: "center"},
+            ],
+            autowidth: true,
+            rownumbers: true,
+            multiselect: true,
+            pager: '#pager',
+            rowNum: 10,
+            rowList: [10, 20, 50],
+            sortname: 'id',
+            sortorder: 'asc',
+            height: 250,
+        });
+        $(window).on('resize.jqGrid', function () {
+            $("#list").jqGrid('setGridWidth', $("#list").parent().parent().parent().parent().parent().width());
+        })
+        $(".jarviswidget-fullscreen-btn").click(function () {
+            setTimeout(function () {
+                $("#list").jqGrid('setGridWidth', $("#list").parent().parent().parent().parent().parent().width());
+            }, 100);
+        });
+    });
+</script>
+<table id="list"></table>
+<div id="pager"></div>
+</body>
+</html>

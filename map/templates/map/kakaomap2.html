@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <!-- jQuery CDN 추가 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Kakao 지도 시작하기</title>
+</head>
+<body>
+
+<div>
+    <div style="flex-direction: row; float: left">
+        <div id="map" style="width: 800px; height: 500px"></div>
+
+        <div id="lat" style="display: none">
+            {% for al in alcolshops %}
+                {{ al.latitude }}
+            {% endfor %}
+        </div>
+
+        <div id="lng" style="display: none">
+            {% for al in alcolshops %}
+                {{ al.longitude }}
+            {% endfor %}
+        </div>
+
+        <div id="name" style="display: none">
+            {% for al in alcolshops %}
+                {{ al.name }}
+            {% endfor %}
+        </div>
+
+    </div>
+    <div>
+        <form method="POST" action="{% url 'map:kakaomap' %}">
+            {% csrf_token %}
+            <p><label for="id_patner">patner:</label>
+                <input type="checkbox" name="patner" id="id_patner">
+            </p>
+            <p><label for="id_store">store:</label>
+                <input type="checkbox" name="store" id="id_store">
+            </p>
+            <button type="submit">search</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    var container = document.getElementById('map')
+    var options = {
+        center: new kakao.maps.LatLng(37.4986232309429, 127.028065727387),
+        level:3
+    };
+
+    var map = new kakao.maps.Map(container, options);
+
+    var list_lat = document.getElementById("lat").innerText.split(',');
+    var list_lng = document.getElementById("lng").innerText.split(',');
+    var list_name = document.getElementById("name").innerText.split(',');
+
+    var alcolshopsCoordinates = new Array(); // 좌표 정보를 저장할 배열 생성
+
+    for (var idx = 0; idx < list_lat.length; idx++) {
+        var latitude = list_lat[idx];
+        var longitude = list_lng[idx];
+        alcolshopsCoordinates.push(new kakao.maps.LatLng(latitude, longitude));
+        // 배열에 데이터 집어넣고
+    }
+
+    for(var idx = 0; idx < alcolshopsCoordinates.length; idx++) { // 데일리샷에서 일하게 해주셔서 정말 너무 감사합니다ㅜㅜ
+        var marker = new kakao.maps.Marker({ // 마커 넣어주기 포지션에 들어가고
+            map: map,
+            position: alcolshopsCoordinates[idx],
+            title: list_name[idx],
+        });
+        var infoWindow = new kakao.maps.InfoWindow({ // 여기다 더 뭐 넣을 수 있겠다.
+            content: list_name[idx]
+        });
+        (function (marker, infoWindow) {
+            kakao.maps.event.addListener(marker, 'mouserover', function (){
+                infoWindow.open(map,marker);
+            });
+            kakao.maps.event.addListener(marker, 'mouseout', function (){
+                infoWindow.close();
+            });
+        })
+        (marker, infoWindow)
+    }
+</script>
+</body>
+</html>
