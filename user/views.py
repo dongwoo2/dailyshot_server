@@ -31,7 +31,7 @@ class Join(APIView):
 
 class Login(APIView):
     def get(self, request):
-        return render(request, 'user/Login.html')
+        return render(request, 'user/login.html')
 
     def post(self, request):
         email = request.data.get('email', None)
