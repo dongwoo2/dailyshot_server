@@ -105,10 +105,10 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '3.25.95.97',
+        'HOST': 'dailyshotdev-instance-1.cpge2auyctud.ap-southeast-2.rds.amazonaws.com',
         'NAME': 'dailyshot',
-        'USER': 'root',
-        'PASSWORD': '4106',
+        'USER': 'admin',
+        'PASSWORD': 'rla50645064!',
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb4'},
     }
