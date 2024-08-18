@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from user.models import User
 
-
+#
 class Main(APIView):
     def get(self, request):
         #print('로그인한 사용자 : ', request.session['email'])
