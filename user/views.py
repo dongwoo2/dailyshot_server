@@ -39,8 +39,8 @@ class Login(APIView):
 
         user = User.objects.filter(email=email).first() # 어차피 유니크이기 때문에 하나만 옴 그렇지만 first를 붙이지 않으면 리스트 형태로 넘어옴 그러면 for문 써서 한 번 귀찮게 데이터 가져와야함
 
-        if user in None:
-            return Response(status=400, data=dict(message='회원 정보가 잘못되었습니다.'))
+      #  if user in None:
+          #  return Response(status=400, data=dict(message='회원 정보가 잘못되었습니다.'))
 
         if user.check_password(password):
             # 로그인을 했다 . 세션 or 쿠키에 넣는다.

@@ -19,10 +19,10 @@ class UserTest(TestCase):
     # 정상적으로 회원가입 API 호출했을 떄 200이 나오나? 체크하는 함수
     def test_join(self):
         response = self.client.post('/user/join', data=dict(
-            email='test@naver.com',
-            nickname='test_nick',
+            email='test2@naver.com',
+            nickname='test_nickname',
             name='test_name',
-            password=make_password('PASSWORD'),
+            password='PASSWORD',
         ))
         self.assertEqual(response.status_code, 200) # 이건 API가 제대로 호출됐는지 테스트 한거고
         #실제로 개발데이터베이스에 있는 데이터가 같은지 체크할려면 밑에 꺼 쓰기
