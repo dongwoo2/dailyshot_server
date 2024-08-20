@@ -15,6 +15,19 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#environ을 기존 improt에 추가
+import environ
+
+env = environ.Env(DEBUG=(bool,True))
+
+#환경변수 파일 읽어오기
+environ.Env.read_env(
+        env_file=os.path.join(BASE_DIR, '.env')
+)
+MYSQL_HOST = env('MYSQL_HOST')
+MYSQL_USER_NAME = env('MYSQL_USER_NAME')
+MYSQL_PASSWORD = env('MYSQL_PASSWORD')
+DEBUG = env('DEBUG')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -105,10 +118,10 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
+        'HOST': MYSQL_HOST,
         'NAME': 'dailyshot',
-        'USER': os.environ.get('MYSQL_USER_NAME', 'default_user'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'default_password'),
+        'USER': MYSQL_USER_NAME,
+        'PASSWORD': MYSQL_PASSWORD,
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb4'},
     }
