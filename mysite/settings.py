@@ -105,6 +105,18 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'dailyshotdev3-instance-1.cpge2auyctud.ap-southeast-2.rds.amazonaws.com',
+        'NAME': 'dailyshot',
+        'USER': 'admin',
+        'PASSWORD': 'rla50645064!',
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'},
+    }
+}
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
         'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
         'NAME': 'dailyshot',
         'USER': os.environ.get('MYSQL_USER_NAME', 'default_user'),
@@ -113,7 +125,7 @@ DATABASES = {
         'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
-
+'''
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

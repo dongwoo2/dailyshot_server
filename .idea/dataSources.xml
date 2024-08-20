@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\ieied\Documents\DailyShot\Daily-Shot\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="devdaily" uuid="9658ede4-082d-4688-842b-e1919b853aa4">
+      <driver-ref>mysql_aurora_aws</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>software.aws.rds.jdbc.mysql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql:aws://dailyshotdev3-instance-1.cpge2auyctud.ap-southeast-2.rds.amazonaws.com:3306/dailyshot</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
