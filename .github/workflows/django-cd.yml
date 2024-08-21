@@ -1,4 +1,4 @@
-name: Django CI
+name: Django CD
 
 on:
   workflow_run: #장고 CI가 성공하면 CD 배포를 하겠다.
