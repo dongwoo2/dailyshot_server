@@ -121,8 +121,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'HOST': env('MYSQL_HOST', default='localhost'),
         'NAME': 'dailyshot',
-        'USER': env('MYSQL_USER_NAME',default='root'),
-        'PASSWORD': env('MYSQL_PASSWORD',default='<PASSWORD>'),
+        'USER': env('MYSQL_USER_NAME',default='default_user'),
+        'PASSWORD': env('MYSQL_PASSWORD',default='default_password'),
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb4'},
     }
