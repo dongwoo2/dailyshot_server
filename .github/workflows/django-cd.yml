@@ -1,0 +1,23 @@
+name: Django CI
+
+on:
+  workflow_run: #장고 CI가 성공하면 CD 배포를 하겠다.
+    workflows: [ "Django CI" ]
+    types:
+      - completed
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name : connect ec2 # 서버에 접속
+        uses : appleboy/ssh-action@master # ssh명령어를 쓸 수 있는 패키지를 쓰겠다.
+        with: # 이제 ssh로 접속할 때 필요한 정보 밑에
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: 22
+          script: |
+            cd /home/ubuntu/dailyshot_server
+            git pull
+            sudo systemctl restart uwsgi
