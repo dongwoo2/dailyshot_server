@@ -115,13 +115,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 # git add .
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': MYSQL_HOST,
+        'HOST': env('MYSQL_HOST', default='localhost'),
         'NAME': 'dailyshot',
-        'USER': MYSQL_USER_NAME,
-        'PASSWORD': MYSQL_PASSWORD,
+        'USER': env('MYSQL_USER_NAME',default='root'),
+        'PASSWORD': env('MYSQL_PASSWORD',default='<PASSWORD>'),
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb4'},
     }
