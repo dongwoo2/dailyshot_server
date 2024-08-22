@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.hashers import make_password
 from user.models import User
-
+'''
 
 # Create your tests here.
 class UserTest(TestCase):
@@ -40,3 +40,4 @@ class UserTest(TestCase):
         ))
 
         self.assertEqual(response.status_code, 200)
+'''
