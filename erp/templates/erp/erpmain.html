@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jqxGrid 예제</title>
+    <link rel="stylesheet" href="{% static 'css/jqx.base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jqx.light.css' %}">
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'js/jqxcore.js' %}"></script>
+    <script src="{% static 'js/jqxdata.js' %}"></script>
+    <script src="{% static 'js/jqxgrid.js' %}"></script>
+    <!-- 추가적인 jqxGrid 관련 JS 파일도 필요에 따라 추가 -->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--jQuery 스크립트 -->
+    <script  src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+    <title>판매 데이터 삽입</title>
+</head>
+<body style="background: #FAFAFA">
+<div style="display: flex;flex-direction: column;align-items:center;  width: 100%;">
+
+</div>
+
+
+<!-- Optional JavaScript; choose one of the two! -->
+<script>
+    $(document).ready(function () {
+        var data = [];
+
+    })
+
+
+    $.ajax({
+    type: "POST",
+    url: "/erp/update_sellcount",
+    data: {
+        sell_alcol_id: 1, // 예시 ID
+        sell_date: "2024-08-22", // 예시 날짜
+        csrfmiddlewaretoken: '{{ csrf_token }}' // CSRF 토큰 추가
+    },
+    success: function(response) {
+        console.log(response);
+    },
+    error: function(xhr) {
+        console.error(xhr.responseJSON.error);
+    }
+});
+
+</script>
+
+<!-- Option 1: Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+<!-- Option 2: Separate Popper and Bootstrap JS -->
+<!--
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+-->
+</body>
+</html>

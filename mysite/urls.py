@@ -18,6 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+import erp
 from . import settings
 from . views import Main
 
@@ -29,6 +30,7 @@ urlpatterns = [
     path('map/', include('map.urls')),
     path('alcoldrinks/', include('alcoldrinks.urls')),
     path('user/', include('user.urls')),
+    path('erp/', include('erp.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #

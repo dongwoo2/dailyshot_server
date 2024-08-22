@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>jqxGrid 예제</title>
+    {% load static %}
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="{% static 'jqwidgets-ver19.2.0/jqwidgets/styles/jqx.base.css' %}"/>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxcore.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxdata.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxmenu.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxgrid.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxbuttons.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxgrid.filter.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxgrid.columnsresize.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxgrid.sort.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxgrid.selection.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxdropdownlist.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxlistbox.js' %}"></script>
+    <script src="{% static 'jqwidgets-ver19.2.0/jqwidgets/jqxscrollbar.js' %}"></script>
+
+
+    <!-- 추가적인 jqxGrid 관련 JS 파일도 필요에 따라 추가 -->
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!--jQuery 스크립트 -->
+
+</head>
+<body>
+<h1>판매 통계</h1>
+<div id="jqxgrid" style="width: 100%; height: 400px;"></div>
+
+<script>
+    $(document).ready(function () {
+        // 아작스로 데이터 가져온 다음에 그 데이터를 넣자
+        var data1
+        var data = JSON.parse('[{ "name": "홍길동", "age": "23", "address": "서울 강남구","phone": "010-1234-XXXX", "birthday": "1990-02-05","allowance": 5000}, { "name": "이몽룡", "age": "18", "address": "서울 도봉구","phone": "010-9999-XXXX", "birthday": "1995-06-10","allowance": 20000}, { "name": "성춘향", "age": "18", "address": "서울 중랑구","phone": "010-1593-XXXX", "birthday": "1995-08-23","allowance": 12000}, { "name": "김흥부", "age": "32", "address": "서울 동대문구","phone": "010-2854-XXXX", "birthday": "1984-07-11","allowance": 8000}, { "name": "박놀부", "age": "35", "address": "서울 강서구","phone": "010-4675-XXXX", "birthday": "1982-05-22","allowance": 35000}, { "name": "심청이", "age": "21", "address": "서울 동작구","phone": "010-8948-XXXX", "birthday": "1991-11-25","allowance": 15000}]');
+
+        // prepare the data
+        var source = {
+            datatype: "json",
+            datafields: [{
+                name: 'name',
+                type: 'string'
+            },
+                {
+                    name: 'age',
+                    type: 'int'
+                },
+                {
+                    name: 'address',
+                    type: 'string'
+                },
+                {
+                    name: 'phone',
+                    type: 'string'
+                },
+                {
+                    name: 'birthday',
+                    type: 'date'
+                },
+                {
+                    name: 'allowance',
+                    type: 'number'
+                }
+            ],
+            localdata: data
+        };
+        var dataAdapter = new $.jqx.dataAdapter(source);
+        $("#jqxgrid").jqxGrid({
+            width: '100%', //너비설정
+            height: '300', //높이설정
+            source: dataAdapter, // 데이터 연결
+            sortable: true, // 정렬 여부
+            filterable: true, // 열 필터(검색)
+            showstatusbar: true, // 상태바 표시 여부
+            columnsresize: true, // 열 너비 조정 가능 여부
+            theme: 'energyblue', // 테마 설정
+            columns: [{
+                text: '이름',
+                datafield: 'name',
+                width: "10%"
+            },
+                {
+                    text: '나이',
+                    datafield: 'age',
+                    width: "10%"
+                },
+                {
+                    text: '주소',
+                    datafield: 'address',
+                    width: "20%"
+                },
+                {
+                    text: '전화번호',
+                    datafield: 'phone',
+                    width: "20%"
+                },
+                {
+                    text: '생일',
+                    datafield: 'birthday',
+                    cellsformat: "yyyy-MM-dd",
+                    width: "20%"
+                },
+                {
+                    text: '용돈',
+                    datafield: 'allowance',
+                    cellsformat: 'd',
+                    cellsalign: 'right',
+                    width: "20%"
+                }
+            ]
+        });
+    });
+</script>
+</body>
+</html>
