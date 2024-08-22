@@ -1,14 +1,19 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import User
 from django.contrib.auth.hashers import make_password
+from django.contrib import messages
 import re  # 정규 표현식을 사용하기 위한 모듈
 # Create your views here.
 
 
 class Join(APIView):
     def get(self, request):
+        if request.session.get('email'):
+            messages.warning(request, '이미 로그인 되어있습니다.')
+            return redirect('/main')
+
         return render(request, 'user/join.html')
 
     def post(self, request):
@@ -17,9 +22,7 @@ class Join(APIView):
         nickname = request.data.get('nickname', None)
         name = request.data.get('name', None)
         password = request.data.get('password', None)
-        # 비밀번호 유효성 검사
-        if not self.is_valid_password(password):
-            return Response(status=400, data=dict(message='비밀번호는 8자리 이상이어야 하며, 영어와 숫자가 모두 포함되어야 합니다.'))
+
         # 이메일 중복 체크
         if User.objects.filter(email=email).exists():
             return Response(status=400, data=dict(message='이미 사용 중인 이메일입니다.'))
@@ -27,6 +30,13 @@ class Join(APIView):
         # 닉네임 중복 체크
         if User.objects.filter(nickname=nickname).exists():
             return Response(status=400, data=dict(message='이미 사용 중인 닉네임입니다.'))
+
+        # 비밀번호 유효성 검사
+        if not self.is_valid_password(password):
+            return Response(status=400, data=dict(message='비밀번호는 8자리 이상이어야 하며, 영어와 숫자가 모두 포함되어야 합니다.'))
+
+
+
 
         # password 는 민감정보 이기 떄문에 암호화해서 넣어야함
         # password 단방향 암호화를 주로 사용함
@@ -49,6 +59,10 @@ class Join(APIView):
 
 class Login(APIView):
     def get(self, request):
+        if request.session.get('email'):
+            messages.warning(request, '이미 로그인 되어있습니다.')
+            return redirect('/main')
+
         return render(request, 'user/login.html')
 
     def post(self, request):
@@ -57,7 +71,7 @@ class Login(APIView):
 
         user = User.objects.filter(email=email).first() # 어차피 유니크이기 때문에 하나만 옴 그렇지만 first를 붙이지 않으면 리스트 형태로 넘어옴 그러면 for문 써서 한 번 귀찮게 데이터 가져와야함
 
-        if user in None:
+        if user is None:
             return Response(status=400, data=dict(message='회원 정보가 잘못되었습니다.'))
 
         if user.check_password(password):
@@ -66,3 +80,8 @@ class Login(APIView):
             return Response(status=200)
         else:
             return Response(status=400, data=dict(message='회원 정보가 잘못되었습니다.'))
+
+class Logout(APIView):
+    def get(self, request):
+        request.session.flush()
+        return render(request, 'user/login.html')

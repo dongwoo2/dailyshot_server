@@ -47,28 +47,16 @@
         var source = {
             datatype: "json",
             datafields: [{
-                name: 'name',
-                type: 'string'
+                name: 'date',
+                type: 'date'
             },
                 {
-                    name: 'age',
+                    name: 'alcolname',
+                    type: 'string'
+                },
+                {
+                    name: 'sellcount',
                     type: 'int'
-                },
-                {
-                    name: 'address',
-                    type: 'string'
-                },
-                {
-                    name: 'phone',
-                    type: 'string'
-                },
-                {
-                    name: 'birthday',
-                    type: 'date'
-                },
-                {
-                    name: 'allowance',
-                    type: 'number'
                 }
             ],
             localdata: data
@@ -84,38 +72,21 @@
             columnsresize: true, // 열 너비 조정 가능 여부
             theme: 'energyblue', // 테마 설정
             columns: [{
-                text: '술 이름',
-                datafield: 'name',
+                text: '팔린 날',
+                datafield: 'date',
                 width: "10%"
             },
                 {
-                    text: '나이',
-                    datafield: 'age',
+                    text: '술 이름',
+                    datafield: 'alcolname',
                     width: "10%"
                 },
                 {
-                    text: '주소',
-                    datafield: 'address',
-                    width: "20%"
-                },
-                {
-                    text: '전화번호',
-                    datafield: 'phone',
-                    width: "20%"
-                },
-                {
-                    text: '생일',
-                    datafield: 'birthday',
-                    cellsformat: "yyyy-MM-dd",
-                    width: "20%"
-                },
-                {
-                    text: '용돈',
-                    datafield: 'allowance',
-                    cellsformat: 'd',
-                    cellsalign: 'right',
+                    text: '팔린 양',
+                    datafield: 'sellcount',
                     width: "20%"
                 }
+
             ]
         });
     });

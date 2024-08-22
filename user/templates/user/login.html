@@ -17,7 +17,7 @@
 <body style="background: #FAFAFA">
 <div style="display: flex;flex-direction: column;align-items:center;  width: 100%;">
     <div style="padding: 20px;text-align:center;border: solid 1px rgba(219, 219, 219, 1); width: 300px; height: 300px; margin-top: 300px; background: white;">
-        <div style="padding-bottom: 10px;text-align: center;"><img style="width: 150px;" src="dailyshot_server/images/daily.png">
+        <div style="padding-bottom: 10px;text-align: center;"><img style="width: 150px;" src="/static/images/daily.PNG">
                                                                    <!--src="http://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png"-->>
         </div>
         <div style="padding-bottom: 20px;font-weight: bold; color: gray;"> 맛있는 술을 보기 위해 가입하세요</div>
@@ -64,6 +64,9 @@
             },
             error: function (request, status, error) {
                 console.log("에러");
+                alert('회원정보가 잘못 입력되었습니다.')
+                $('#input_email').val("")
+                $('#input_password').val("")
             },
             complle: function () {
                 console.log("완료");

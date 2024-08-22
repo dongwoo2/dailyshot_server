@@ -21,10 +21,22 @@
     <title>Hello, world!</title>
 </head>
 <body>
+{% if messages %}
+    <div id="alert-container">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="position: fixed;width: 100%; z-index: 999">
     <div class="container-fluid" style="justify-content: space-between;flex-wrap: nowrap; min-width: 1000px">
         <a class="navbar-brand" href="/main"><img style="width: 100px"
-                                                 src="https://www.instagram.com/static/images/web/mobile_nav_type_logo-2x.png/1b47f9d0e595.png">
+                                                 src="/static/images/daily.PNG">
         </a>
         <input class="form-control me-2" style="width: 400px" type="search" placeholder="상품명 검색" aria-label="Search">
         <div style="display: flex">
@@ -33,6 +45,8 @@
         </div>
         <div><a href="{% url 'alcoldrinks:showalcol' %}">술 보기</a></div>
         <div><a href="{% url 'erp:showerp' %}">통계 보기</a></div>
+        {{ user.nickname }}
+        <div><a href="{% url 'user:logout' %}">로그아웃</a></div>
     </div>
 </nav>
 
@@ -47,7 +61,16 @@
 
     </div>
 </div>
-
-
+<script>
+    // 경고 메시지를 5초 후에 사라지게 하는 함수
+    window.onload = function() {
+        setTimeout(function() {
+            const alertContainer = document.getElementById('alert-container');
+            if (alertContainer) {
+                alertContainer.style.display = 'none';  // 메시지 숨기기
+            }
+        }, 5000);  // 5000 밀리초 = 5초
+    };
+</script>
 </body>
 </html>
