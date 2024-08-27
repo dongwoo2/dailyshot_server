@@ -47,13 +47,11 @@ def update_sell_count(request):
 
 
 def sell_statistics(request):
-    # SellCountData에서 모든 데이터 가져오기
     sellcountdata = []
-    if request.method == "GET":
-        return render(request, 'erp/erpsell.html')
-    elif request.method == "POST":
-        selected_date = request.POST.get('selected_date', None)
-        sellcountdata = SellCountData.objects.filter(sell_date=selected_date)
-
+    if request.method == "POST":
+        selected_date = request.POST.get('selected_date')
+        if selected_date:
+            sellcountdata = SellCountData.objects.filter(sell_date=selected_date)
+            print(sellcountdata)
 
     return render(request, 'erp/erpsell.html', {'sellcountdata': sellcountdata})

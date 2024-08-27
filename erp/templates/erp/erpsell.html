@@ -99,11 +99,12 @@
                 data: {selectedDate: selectedDate}, // 일단은 내가 줄 데이터는 없음
                 method: "POST",
                 <!--processData: false,django.db.utils.IntegrityError: NOT NULL constraint failed: User.name 이거 지우니까 이 오류 사라짐-->
-                success: function (data) {
+                success: function (response) {
                     console.log("성공");
-                    console.log(data);
-                    alert(data)
-                    selldata = data
+                    console.log(response);
+                    alert(response)
+                    selldata = response
+                    console.log(`response 후에 받는 데이터 : ${JSON.stringify(response)}`);
                 },
                 error: function (request, status, error) {
                     console.log("에러");
@@ -116,7 +117,7 @@
         });
 
         //var data = JSON.parse(selldata);
-        var data = JSON.parse('[{ "alcolname": "와일드터키 레어브리드", "sellcount": "23", "date": "1990-02-05"}, { "alcolname": "로얄샬루트 21년", "sellcount": "23", "date": "2990-02-05"}]');
+        var data = JSON.parse('[{ "sell_alcol_name": "와일드터키 레어브리드", "sellcount": "23", "sell_date": "1990-02-05"}, { "alcolname": "로얄샬루트 21년", "sellcount": "23", "date": "2990-02-05"}]');
         alert(selldata);
         // prepare the data
         var source = {
@@ -124,7 +125,8 @@
             datafields: [
                 {name: 'sell_date', type: 'date'},
                 {name: 'sell_alcol_id', type: 'int'},
-                {name: 'sell_count', type: 'float'}
+                {name: 'sell_alcol_name', type: 'text'},
+                {name: 'sell_count', type: 'int'}
             ],
             localdata: data
         };
@@ -147,7 +149,7 @@
 
                 {
                     text: '술 이름',
-                    datafield: 'sell_alcol_id',
+                    datafield: 'sell_alcol_name',
                     width: "10%"
                 },
                 {
