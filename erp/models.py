@@ -12,5 +12,5 @@ class SellData(models.Model):
 
 class SellCountData(models.Model): # update 위주의 쿼리가 들어가야 할 것
     sell_alcol_id = models.IntegerField() # 팔린거 id
-    sell_date = models.DateField() # 팔린 날
+    sell_date = models.DateField() # 팔
     sell_count = models.FloatField() # 팔린 양
