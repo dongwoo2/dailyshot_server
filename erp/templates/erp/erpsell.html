@@ -31,34 +31,100 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <!--jQuery 스크립트 -->
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
 
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    </script>
 </head>
 <body>
 <h1>판매 통계</h1>
+<div>
+    <label for="datePicker">날짜 선택:</label>
+    <input type="date" id="datePicker"/>
+    <button id="sell_button">검색하기</button>
+    <!--<input type="text" id="dateInput" placeholder="선택한 날짜가 여기에 표시됩니다." />
+    <script>
+        const datePicker = document.getElementById('datePicker');
+        const dateInput = document.getElementById('dateInput');
+
+        datePicker.addEventListener('change', function() {
+            dateInput.value = datePicker.value;
+        });
+    </script>
+    -->
+</div>
 <div id="jqxgrid" style="width: 100%; height: 400px;"></div>
 
 <script>
     $(document).ready(function () {
         // 아작스로 데이터 가져온 다음에 그 데이터를 넣자
-        var data1
+        var selldata;
+        $('#sell_button').click(function () {
+            const selectedDate = $('#datePicker').val();
+            if (!selectedDate) {
+                alert('날짜를 선택해주세요.')
+                return;
+            }
+            $.ajax({
+                url: "/erp/sell_statistics/",
+                data: {selectedDate: selectedDate}, // 일단은 내가 줄 데이터는 없음
+                method: "POST",
+                <!--processData: false,django.db.utils.IntegrityError: NOT NULL constraint failed: User.name 이거 지우니까 이 오류 사라짐-->
+                success: function (data) {
+                    console.log("성공");
+                    console.log(data);
+                    alert(data)
+                    selldata = data
+                },
+                error: function (request, status, error) {
+                    console.log("에러");
+                    alert('예상치 못한 오류 발생')
+                },
+                complle: function () {
+                    console.log("완료");
+                }
+            });
+        });
 
+        //var data = JSON.parse(selldata);
         var data = JSON.parse('[{ "alcolname": "와일드터키 레어브리드", "sellcount": "23", "date": "1990-02-05"}, { "alcolname": "로얄샬루트 21년", "sellcount": "23", "date": "2990-02-05"}]');
-
+        alert(selldata);
         // prepare the data
         var source = {
             datatype: "json",
-            datafields: [{
-                name: 'date',
-                type: 'date'
-            },
-                {
-                    name: 'alcolname',
-                    type: 'string'
-                },
-                {
-                    name: 'sellcount',
-                    type: 'int'
-                }
+            datafields: [
+                {name: 'sell_date', type: 'date'},
+                {name: 'sell_alcol_id', type: 'int'},
+                {name: 'sell_count', type: 'float'}
             ],
             localdata: data
         };
@@ -72,19 +138,21 @@
             showstatusbar: true, // 상태바 표시 여부
             columnsresize: true, // 열 너비 조정 가능 여부
             theme: 'energyblue', // 테마 설정
-            columns: [{
-                text: '팔린 날',
-                datafield: 'date',
-                width: "10%"
-            },
+            columns: [
+                {
+                    text: '팔린 날',
+                    datafield: 'sell_date',
+                    width: "10%"
+                },
+
                 {
                     text: '술 이름',
-                    datafield: 'alcolname',
+                    datafield: 'sell_alcol_id',
                     width: "10%"
                 },
                 {
                     text: '팔린 양',
-                    datafield: 'sellcount',
+                    datafield: 'sell_count',
                     width: "20%"
                 }
 

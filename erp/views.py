@@ -6,10 +6,13 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import SellCountData
 from django.utils import timezone
+from .forms import DateSearchForm
 
 
 def showerp(request):
     return render(request, 'erp/main.html')
+
+
 def update_sell_count(request):
     if request.method == "POST":
         sell_alcol_id = request.POST.get('sell_alcol_id')
@@ -45,5 +48,12 @@ def update_sell_count(request):
 
 def sell_statistics(request):
     # SellCountData에서 모든 데이터 가져오기
-    data = SellCountData.objects.values('sell_alcol_id', 'sell_date', 'sell_count')
-    return render(request, 'erp/erpsell.html', {'data': data})
+    sellcountdata = []
+    if request.method == "GET":
+        return render(request, 'erp/erpsell.html')
+    elif request.method == "POST":
+        selected_date = request.POST.get('selected_date', None)
+        sellcountdata = SellCountData.objects.filter(sell_date=selected_date)
+
+
+    return render(request, 'erp/erpsell.html', {'sellcountdata': sellcountdata})

@@ -30,7 +30,20 @@ class SellData(models.Model):
     sell_status = models.IntegerField() # 환불, 완료 이런 상태 값 넣을 곳
     sell_comment = models.TextField()
 
+# update 위주
 class SellCountData(models.Model): # update 위주의 쿼리가 들어가야 할 것
     sell_alcol_id = models.IntegerField() # 팔린거 id
-    sell_date = models.DateField() # 팔
+    sell_alcol_name = models.CharField(max_length=100, default='기타')
+    sell_date = models.DateField() # 팔린 날
     sell_count = models.FloatField() # 팔린 양
+
+
+# SellData에 있는 데이터들 업데이트 될 때마다 상세 기록 뭐가 업데이트 되고 그랬는지
+
+# 근데 날짜도 있어야할듯 index 용으로다가
+class SellData_Check(models.Model):
+    sell_alcol_id = models.IntegerField() # 일단 selldata랑 id값 같아야하고
+    sell_data = models.DateField() # 팔린 날 검색할 index용은 있어야 함
+    sell_Sequence = models.IntegerField() # 업데이트 기록 최고
+    sell_status = models.IntegerField() # 상태 기록
+
