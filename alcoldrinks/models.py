@@ -4,23 +4,23 @@ from django.db import models
 class AlcolDrinks(models.Model):
 
     ALCOL_TYPE_CHOICES = { # 술 종류
-        ('Whisky','위스키'),
-        ('Soju','소주'),
-        ('Sake','사케'),
-        ('Wine','와인'),
-        ('Beer','맥주'),
-        ('Other', '기타'),
+        ('Whisky','위스키'), # 01
+        ('Soju','소주'), # 02
+        ('Sake','사케'), # 03
+        ('Wine','와인'),# 04
+        ('Beer','맥주'), # 05
+        ('Other', '기타'), # 06
     }
     DRINK_TYPE_CHOICES = [ # 술 세부 종류
-        ('Bourbon', '버번'),
-        ('Scotch', '스카치'),
-        ('Soju','소주'),
-        ('Sake', '사케'),
-        ('Red Wine', '레드와인'),
-        ('White Wine', '화이트와인'),
-        ('Lager', '라거'),
-        ('ALE', '에일'),
-        ('Other', '기타'),
+        ('Bourbon', '버번'), # 01
+        ('Scotch', '스카치'), # 02
+        ('Soju','소주'), # 03
+        ('Sake', '사케'), # 04
+        ('Red Wine', '레드와인'), # 05
+        ('White Wine', '화이트와인'), # 06
+        ('Lager', '라거'), # 07
+        ('ALE', '에일'), # 08
+        ('Other', '기타'), # 09
     ]
 
 
