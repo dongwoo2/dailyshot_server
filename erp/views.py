@@ -3,7 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 
 from django.shortcuts import render
-from django.http import JsonResponse
+# from django.http import JsonResponse
+from django.http.response import JsonResponse
 from .models import SellCountData
 from django.utils import timezone
 from .forms import DateSearchForm
@@ -47,11 +48,22 @@ def update_sell_count(request):
 
 
 def sell_statistics(request):
-    sellcountdata = []
+    selldata_json = []
     if request.method == "POST":
         selected_date = request.POST.get('selected_date')
         if selected_date:
             sellcountdata = SellCountData.objects.filter(sell_date=selected_date)
             print(sellcountdata)
+            for selldata in sellcountdata:
+                selldata_json.append(
+                    {
+                        'sell_alcol_id': selldata.sell_alcol_id,
+                        'sell_alcol_name': selldata.sell_alcol_name,
+                        'sell_date': selldata.sell_date,
+                        'sell_count': selldata.sell_count
+                    }
+                )
+            return JsonResponse(selldata_json, safe=False)
+    return render(request, 'erp/erpsell.html')
 
-    return render(request, 'erp/erpsell.html', {'sellcountdata': sellcountdata})
+

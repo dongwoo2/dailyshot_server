@@ -56,7 +56,7 @@
         }
 
         $.ajaxSetup({
-            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            headers: {"X-CSRFToken": '{{csrf_token}}'},
             beforeSend: function (xhr, settings) {
                 if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
                     xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -86,40 +86,6 @@
 
 <script>
     $(document).ready(function () {
-        // 아작스로 데이터 가져온 다음에 그 데이터를 넣자
-        var selldata;
-        $('#sell_button').click(function () {
-            const selectedDate = $('#datePicker').val();
-            if (!selectedDate) {
-                alert('날짜를 선택해주세요.')
-                return;
-            }
-            $.ajax({
-                url: "/erp/sell_statistics/",
-                data: {selectedDate: selectedDate}, // 일단은 내가 줄 데이터는 없음
-                method: "POST",
-                <!--processData: false,django.db.utils.IntegrityError: NOT NULL constraint failed: User.name 이거 지우니까 이 오류 사라짐-->
-                success: function (response) {
-                    console.log("성공");
-                    console.log(response);
-                    alert(response)
-                    selldata = response
-                    console.log(`response 후에 받는 데이터 : ${JSON.stringify(response)}`);
-                },
-                error: function (request, status, error) {
-                    console.log("에러");
-                    alert('예상치 못한 오류 발생')
-                },
-                complle: function () {
-                    console.log("완료");
-                }
-            });
-        });
-
-        //var data = JSON.parse(selldata);
-        var data = JSON.parse('[{ "sell_alcol_name": "와일드터키 레어브리드", "sellcount": "23", "sell_date": "1990-02-05"}, { "alcolname": "로얄샬루트 21년", "sellcount": "23", "date": "2990-02-05"}]');
-        alert(selldata);
-        // prepare the data
         var source = {
             datatype: "json",
             datafields: [
@@ -128,8 +94,9 @@
                 {name: 'sell_alcol_name', type: 'text'},
                 {name: 'sell_count', type: 'int'}
             ],
-            localdata: data
+            localdata: []
         };
+        // console.log("local: "+localdata)
         var dataAdapter = new $.jqx.dataAdapter(source);
         $("#jqxgrid").jqxGrid({
             width: '100%', //너비설정
@@ -144,7 +111,8 @@
                 {
                     text: '팔린 날',
                     datafield: 'sell_date',
-                    width: "10%"
+                    width: "30%",
+                    cellsformat: 'yyyy-MM-dd'
                 },
 
                 {
@@ -160,6 +128,53 @@
 
             ]
         });
+        // 아작스로 데이터 가져온 다음에 그 데이터를 넣자
+        $('#sell_button').click(function () {
+            const selectedDate = $('#datePicker').val();
+            if (!selectedDate) {
+                alert('날짜를 선택해주세요.')
+                return;
+            }
+            $.ajax({
+                url: "/erp/sell_statistics/",
+                data: {selected_date: selectedDate}, // 일단은 내가 줄 데이터는 없음
+                method: "POST",
+                dataType: "json", // json으로 받겠습니다.
+                <!--processData: false,django.db.utils.IntegrityError: NOT NULL constraint failed: User.name 이거 지우니까 이 오류 사라짐-->
+                success: function (response) {
+                    console.log("성공");
+                    console.log(response);
+                    console.log(`response 후에 받는 데이터 : ${JSON.stringify(response)}`);
+                    // 데이터를 jqxGrid에 업데이트
+                    data = response;  // 응답 데이터를 바로 사용
+                    var source = {
+                        datatype: "json",
+                        datafields: [
+                            {name: 'sell_date', type: 'date'},
+                            {name: 'sell_alcol_id', type: 'int'},
+                            {name: 'sell_alcol_name', type: 'text'},
+                            {name: 'sell_count', type: 'int'}
+                        ],
+                        localdata: data
+                    };
+                    dataAdapter = new $.jqx.dataAdapter(source);
+                    $("#jqxgrid").jqxGrid({source: dataAdapter});
+                },
+                error: function (request, status, error) {
+                    console.log("에러");
+                    alert('예상치 못한 오류 발생')
+                },
+                complete: function () {
+                    console.log("완료");
+                }
+            });
+
+        });
+
+        // var data = JSON.parse('[{ "sell_alcol_name": "와일드터키 레어브리드", "sellcount": "23", "sell_date": "1990-02-05"}, { "alcolname": "로얄샬루트 21년", "sellcount": "23", "date": "2990-02-05"}]');
+
+        // prepare the data
+
     });
 </script>
 </body>
