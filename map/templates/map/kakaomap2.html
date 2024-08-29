@@ -44,49 +44,65 @@
             <button type="submit">search</button>
         </form>
     </div>
+<div>
+    <button id="submit_btn" type="submit"></button>
+</div>
 </div>
 
+<script type="text/javascript"
+        src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f5318beaf9fa32376898cdd9405db0e2&libraries=services,clusterer,drawing"></script>
 <script>
-    var container = document.getElementById('map')
-    var options = {
-        center: new kakao.maps.LatLng(37.4986232309429, 127.028065727387),
-        level:3
+    // 마커를 담을 배열
+    let markers: any[] = [];
+
+    const container = document.getElementById("map")
+    const options = {
+        center: new window.kakao.maps.LatLng(38.2313466, 128.2139293),
+        level: 1,
     };
+    // 지도를 생성한다.
+    const map = new window.kakao.maps.Map(container, options);
 
-    var map = new kakao.maps.Map(container, options);
+    // markerPosition이라는 변수에 마커의 위치를 담습니다.
+    const markerPosition = new window.kakao.maps.LatLng(
+        38.2313466,
+        128.2139293
+    );
+    // marker라는 변수를 이용해서 위치를 markerPosition의 위치로 지정한다음
+    const marker = new window.kakao.maps.Marker({
+        position: markerPosition,
+    });
+    // marker.setMap(map) 이라는 메서드를 통해서 map에 생성합니다.
+    marker.setMap(map);
 
-    var list_lat = document.getElementById("lat").innerText.split(',');
-    var list_lng = document.getElementById("lng").innerText.split(',');
-    var list_name = document.getElementById("name").innerText.split(',');
+    //검색 객체와 검색 결과 목록이나 마커를 클릭시 장소명을 표출할 인포 윈도우 생성
 
-    var alcolshopsCoordinates = new Array(); // 좌표 정보를 저장할 배열 생성
+    // ps를 이용해 장소 검색 객체를 담습니다. 카카오 자체에서 제공되는 메서드를 이용합니다.
+    const ps = new window.kakao.maps.services.Places();
+    // infowindow라는 변수에 InfoWindow를 만들어 줍니다.
+    const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
-    for (var idx = 0; idx < list_lat.length; idx++) {
-        var latitude = list_lat[idx];
-        var longitude = list_lng[idx];
-        alcolshopsCoordinates.push(new kakao.maps.LatLng(latitude, longitude));
-        // 배열에 데이터 집어넣고
+    // kakao 제공 키워드로 장소를 검색합니다.
+    // 내가 적용한 것
+    const searchForm = document.getElementById("submit_btn");
+    searchForm?.addEventListener("click", function (e) {
+        e.preventDefault();
+        searchPlaces();
+    });
+
+    function searchPlaces() {
+        const keyword = document.getElementById("keyword").value;
+
+        if (!keyword.replace(/^\s+|\s+$/g, "")) {
+            alert("키워드를 입력해주세요!");
+
+            return false;
+        }
+
+        ps.keywordSearch(keyword, placesSearchCB);
+
     }
 
-    for(var idx = 0; idx < alcolshopsCoordinates.length; idx++) {
-        var marker = new kakao.maps.Marker({ // 마커 넣어주기 포지션에 들어가고
-            map: map,
-            position: alcolshopsCoordinates[idx],
-            title: list_name[idx],
-        });
-        var infoWindow = new kakao.maps.InfoWindow({ // 여기다 더 뭐 넣을 수 있겠다.
-            content: list_name[idx]
-        });
-        (function (marker, infoWindow) {
-            kakao.maps.event.addListener(marker, 'mouserover', function (){
-                infoWindow.open(map,marker);
-            });
-            kakao.maps.event.addListener(marker, 'mouseout', function (){
-                infoWindow.close();
-            });
-        })
-        (marker, infoWindow)
-    }
 </script>
 </body>
 </html>

@@ -95,7 +95,10 @@
                 console.log("성공");
                 alert('입점 성공')
                 location.replace('/shop/shopjoin')
-                $('#input_shop_name').clear();
+                $('#input_shop_name').val("");
+                $('#input_location').val("");
+                $('#input_latitude').val("");
+                $('#input_longitude').val("");
             },
             error: function (request, status, error) {
                 console.log("에러");

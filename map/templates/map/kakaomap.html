@@ -391,7 +391,7 @@
         if (data) {
             console.log('데이터가 존재합니다.')
             displayPlaces(data);
-            // displayPagination(pagination);
+            displayPagination(pagination);
         } else {
             alert(data.message || '검색 결과가 존재하지 않습니다.');
             return;
@@ -405,7 +405,7 @@
         console.log(`display진입 후에 받는 데이터 : ${JSON.stringify(places.length)}`)
         console.log("places : " + JSON.stringify(places))
         alert("places : "+JSON.stringify(places))
-
+        alert(places.length)
         if (places.length === 0) {
             alert('검색 결과가 없습니다.');
             return; // 배열이 비어있으면 종료
@@ -420,7 +420,7 @@
         removeAllChildNods(listEl);
 
         // 지도에 표시되고 있는 마커를 제거합니다
-        removeMarker();
+        //removeMarker();
 
         for (var i = 0; i < places.length; i++) {
             alert(places[i].name)
@@ -505,7 +505,7 @@
             });
 
 // 지도 위에 표시되고 있는 마커를 모두 제거합니다
-        function removeMarker() {
+        function removeMarke2r() {
             for (var i = 0; i < markers.length; i++) {
                 markers[i].setMap(null);
             }
