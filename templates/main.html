@@ -43,10 +43,10 @@
              <a href="{% url 'shop:show' %}" style="color: black; text-decoration-line: none; margin-right: 10px;">입점 문의</a>
              <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-right: 10px">add_box</span>
         </div>
-        <div><a href="{% url 'alcoldrinks:showalcol' %}">술 보기</a></div>
-        <div><a href="{% url 'erp:showerp' %}">통계 보기</a></div>
-        {{ user.nickname }}
-        <div><a href="{% url 'user:logout' %}">로그아웃</a></div>
+        <div><a href="{% url 'alcoldrinks:showalcol' %}" style="color : black; text-decoration-line: none;">술 보기</a></div>
+        <div><a href="{% url 'erp:showerp' %}" style="color : black; text-decoration-line: none;">통계 보기</a></div>
+        <h3>{{ user.nickname }}</h3>
+        <div><a href="{% url 'user:logout' %}" style="color : black; text-decoration-line: none;">로그아웃</a></div>
     </div>
 </nav>
 
