@@ -342,12 +342,11 @@
             success: function (response) {
                 console.log("서버 응답: ", response); // 응답 데이터 출력
                 // 성공적으로 처리된 경우
-                alert('데이터 찾기.');
+                console.log('데이터 찾기.');
                 // 필요한 경우 추가적인 처리 (예: 페이지 새로고침, 데이터 갱신 등)
                 if (response.length > 0) {
                     if (typeof placesSearchCB === 'function') {
-                        alert('place로 이동')
-                        alert(`response 후에 받는 데이터 : ${JSON.stringify(response)}`);
+                        console.log('place로 이동')
                         console.log(`response 후에 받는 데이터 : ${JSON.stringify(response)}`);
 
                         placesSearchCB(response);
@@ -386,11 +385,11 @@
         }
     */
     function placesSearchCB(data) {
-        alert('placeSearch 진입')
-        alert(`placesSearchCB 후에 받는 데이터 : ${JSON.stringify(data)}`);
+        console.log('placeSearch 진입')
+        console.log(`placesSearchCB 후에 받는 데이터 : ${JSON.stringify(data)}`);
         console.log("data : ", data)
         if (data) {
-            alert('데이터가 존재합니다.')
+            console.log('데이터가 존재합니다.')
             displayPlaces(data);
             // displayPagination(pagination);
         } else {
@@ -401,9 +400,11 @@
 
     // 검색 결과 목록과 마커를 표출하는 함수입니다
     function displayPlaces(places) {
-        alert('display진입');
-        alert(`display진입 후에 받는 데이터 : ${JSON.stringify(places)}`);
-        alert(`display진입 후에 받는 데이터 : ${JSON.stringify(places.length)}`);
+        console.log('display진입');
+        console.log(`display진입 후에 받는 데이터 : ${JSON.stringify(places)}`);
+        console.log(`display진입 후에 받는 데이터 : ${JSON.stringify(places.length)}`)
+        console.log("places : " + JSON.stringify(places))
+        alert("places : "+JSON.stringify(places))
 
         if (places.length === 0) {
             alert('검색 결과가 없습니다.');
