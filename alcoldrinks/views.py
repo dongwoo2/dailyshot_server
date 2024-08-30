@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from mysite.settings import MEDIA_ROOT
 from .models import AlcolDrinks
 from .forms import AlcolDrinksForm
+from user.models import User
 
 
 # Create your views here.
