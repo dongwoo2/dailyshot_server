@@ -20,7 +20,7 @@ from django.urls import path, include
 
 import erp
 from . import settings
-from . views import Main
+from content.views import Main
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,6 +31,7 @@ urlpatterns = [
     path('alcoldrinks/', include('alcoldrinks.urls')),
     path('user/', include('user.urls')),
     path('erp/', include('erp.urls')),
+    path('content/', include('content.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 #

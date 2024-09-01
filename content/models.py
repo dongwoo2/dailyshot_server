@@ -10,7 +10,7 @@ class Like(models.Model):
 class Reply(models.Model):
     feed_id = models.IntegerField(default=0)
     email = models.EmailField(default='')
-    reply_text = models.TextField(default='')
+    reply_text = models.TextField()
 
 class Bookmark(models.Model):
     feed_id = models.IntegerField(default=0)
