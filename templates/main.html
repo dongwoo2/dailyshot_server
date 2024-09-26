@@ -118,22 +118,27 @@
                 </div>
                 <div style="margin: 0 20px; display: flex; justify-content: space-between">
                     <div>
-                        <span class="favorite material-icons-outlined" style="color: red; cursor: pointer">
-                            favorite
-                        </span>
+                        <span id="favorite_{{ feed.id }}" feed_id="{{ feed.id }}"
+                              class="favorite material-icons-outlined"
+                              style="color: red;cursor: pointer">{% if feed.is_liked %}
+                            favorite{% else %}favorite_border{% endif %}</span>
                     </div>
-                    <div>
-                        <span class="bookmark material-icons-outlined" style="cursor: pointer;">
+                    <div>e
+                        <span id="bookmark_{{ feed.id }}" feed_id="{{ feed.id }}" class="bookmark material-icons-outlined" style="cursor: pointer">
+                            {% if feed.is_marked %}
                             bookmark
+                            {% else %}
+                            bookmark_border
+                            {% endif %}
                         </span>
                     </div>
                 </div>
-                <div style="margin: 0 20px; text-align: left; font-size: 14px"> 춘식이 <b>{{ feed.like_count }}명</b>이 좋아합니다.</div>
+                <div style="margin: 0 20px; text-align: left; font-size: 14px"> <b>{{ feed.like_count }}명</b>이 좋아합니다.</div>
                 <div style="margin: 0 20px; text-align: left; font-size: 16px"><b>{{ feed.nickname }}</b> {{ feed.content }}</div>
                 <div>
                     {% for reply in feed.reply_list %}
                         <div style="margin: 0 20px; text-align: left; font-size: 14px">
-                            <b>답글</b> 답글
+                            <b>{{ reply.nickname }} </b>{{ reply.reply_text }}</div>
                         </div>
                     {% endfor %}
                 </div>
