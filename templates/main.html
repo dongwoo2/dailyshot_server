@@ -116,6 +116,9 @@
                 <div>
                     <img style="width: 100%" src="{% get_media_prefix %}{{ feed.image }}">
                 </div>
+            <div>
+                {{ feed.information }}
+            </div>
                 <div style="margin: 0 20px; display: flex; justify-content: space-between">
                     <div>
                         <span id="favorite_{{ feed.id }}" feed_id="{{ feed.id }}"
@@ -123,7 +126,7 @@
                               style="color: red;cursor: pointer">{% if feed.is_liked %}
                             favorite{% else %}favorite_border{% endif %}</span>
                     </div>
-                    <div>e
+                    <div>
                         <span id="bookmark_{{ feed.id }}" feed_id="{{ feed.id }}" class="bookmark material-icons-outlined" style="cursor: pointer">
                             {% if feed.is_marked %}
                             bookmark
