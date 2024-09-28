@@ -46,7 +46,7 @@ def update_sell_count(request):
 
     return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
 
-
+#
 def sell_statistics(request):
     selldata_json = []
     if request.method == "POST":
