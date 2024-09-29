@@ -66,3 +66,34 @@ class Main(APIView):
         return render(request, "main.html")
 
 
+# 프로필에 내가 북마크하거나 좋아요 한 Alcoldrinks 객체가 나와야함
+# 내가 글을 올리는 기능은 단순히 운영자가 올리는 것임 지금은 영역 구분이 안되어있으나 구분을 해야함
+#
+
+class Profile(APIView):
+    def get(self, request):
+        email = request.session.get('email',None)
+
+        if email is None:
+            return render(request, 'user/login.html')
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            return render(request, "user/login.html")
+        # 내가 좋아요 누른 애들
+        # 당연히 email = email 내가 눌렀단 증거가 있어야 하고
+        # 어떤 피드에 좋아요 눌렀는지 확인하고
+        like_list = list(Like.objects.filter(email=email,is_like=True).values_list('alcoldrinks_id', flat=True))
+        like_feed_list = AlcolDrinks.objects.filter(id__in=like_list)
+
+
+
+class ToggleLike(APIView):
+    def post(self, request):
+        alcoldrinks_id = request.data.get('alcoldrinks_id', None)
+
+
+
+
+
