@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from user.models import User
-
+from rest_framework.response import Response
 #
 from django.shortcuts import render
 from rest_framework.views import APIView
@@ -86,14 +86,24 @@ class Profile(APIView):
         # 어떤 피드에 좋아요 눌렀는지 확인하고
         like_list = list(Like.objects.filter(email=email,is_like=True).values_list('alcoldrinks_id', flat=True))
         like_feed_list = AlcolDrinks.objects.filter(id__in=like_list)
+        bookmark_list = list(Bookmark.objects.filter(email=email, is_marked=True).values_list('alcoldrinks_id', flat=True))
+        bookmark_feed_list = AlcolDrinks.objects.filter(id__in=bookmark_list)
+        return render(request, 'content/profile.html', context=dict(
+                                                                    like_feed_list=like_feed_list,
+                                                                    bookmark_feed_list=bookmark_feed_list,
+                                                                    user=user))
 
 
+class UploadReply(APIView):
+    def post(self, request): # 어떤 거 좋아요 했는지 알아야하니까 그리고 로그인 상황에서만 가능하게
+        alcoldrinks_id = request.data.get('alcoldrinks_id', None)
+        reply_content = request.data.get('reply_content', None)
+        email = request.session.get('email', None)
+
+        Reply.objects.create(alcoldrinks_id=alcoldrinks_id, reply_content=reply_content, email=email)
+
+        return Response(status=200)
 
 class ToggleLike(APIView):
     def post(self, request):
         alcoldrinks_id = request.data.get('alcoldrinks_id', None)
-
-
-
-
-
