@@ -84,10 +84,19 @@ class Profile(APIView):
         # 내가 좋아요 누른 애들
         # 당연히 email = email 내가 눌렀단 증거가 있어야 하고
         # 어떤 피드에 좋아요 눌렀는지 확인하고
-        like_list = list(Like.objects.filter(email=email,is_like=True).values_list('alcoldrinks_id', flat=True))
+
+        # 내가 좋아요 누른 피드의 ID를 가져오는 쿼리
+        # email이 일치하고 is_like가 True인 Like 객체를 필터링하여 feed_id를 가져옴
+        like_list = list(Like.objects.filter(email=email,is_like=True).values_list('feed_id', flat=True))
+        # 가져온 feed_id를 이용해 AlcolDrinks 객체를 필터링
         like_feed_list = AlcolDrinks.objects.filter(id__in=like_list)
-        bookmark_list = list(Bookmark.objects.filter(email=email, is_marked=True).values_list('alcoldrinks_id', flat=True))
+        # 내가 북마크한 피드의 ID를 가져오는 쿼리
+        # email이 일치하고 is_marked가 True인 Bookmark 객체를 필터링하여 feed_id를 가져옴
+        bookmark_list = list(Bookmark.objects.filter(email=email, is_marked=True).values_list('feed_id', flat=True))
+        # 가져온 feed_id를 이용해 AlcolDrinks 객체를 필터링
+        # 좋아요 누를 때 feed_id를 alcoldrinks_id랑 매치시켜서 값을 넣어야함
         bookmark_feed_list = AlcolDrinks.objects.filter(id__in=bookmark_list)
+        # 프로필 페이지를 렌더링하며, 좋아요 피드 리스트와 북마크 피드 리스트, 사용자 정보를 컨텍스트에 담아 전달
         return render(request, 'content/profile.html', context=dict(
                                                                     like_feed_list=like_feed_list,
                                                                     bookmark_feed_list=bookmark_feed_list,
