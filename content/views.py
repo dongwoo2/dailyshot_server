@@ -115,4 +115,43 @@ class UploadReply(APIView):
 
 class ToggleLike(APIView):
     def post(self, request):
-        alcoldrinks_id = request.data.get('alcoldrinks_id', None)
+        feed_id = request.data.get('feed_id', None)
+        favorite_text = request.data.get('favorite_text', True)
+
+        if favorite_text == 'favorite_border':
+            is_like = True
+        else:
+            is_like = False
+        email = request.session.get('email', None)
+
+        like = Like.objects.filter(feed_id=feed_id, email=email).first()
+
+        if like:
+            like.is_like = is_like
+            like.save()
+        else:
+            Like.objects.create(feed_id=feed_id, is_like=is_like, email=email)
+
+        return Response(status=200)
+
+
+class ToggleBookmark(APIView):
+    def post(self, request):
+        feed_id = request.data.get('feed_id', None)
+        bookmark_text = request.data.get('bookmark_text', True)
+        print(bookmark_text)
+        if bookmark_text == 'bookmark_border':
+            is_marked = True
+        else:
+            is_marked = False
+        email = request.session.get('email', None)
+
+        bookmark = Bookmark.objects.filter(feed_id=feed_id, email=email).first()
+
+        if bookmark:
+            bookmark.is_marked = is_marked
+            bookmark.save()
+        else:
+            Bookmark.objects.create(feed_id=feed_id, is_marked=is_marked, email=email)
+
+        return Response(status=200)
